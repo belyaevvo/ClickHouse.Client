@@ -128,17 +128,15 @@ public class ClickHouseCommand : DbCommand, IClickHouseCommand, IDisposable
 
         using var lcts = CancellationTokenSource.CreateLinkedTokenSource(cts.Token, cancellationToken);
         var sqlBuilder = new StringBuilder(CommandText);
-        switch (behavior)
+        if (behavior.HasFlag(CommandBehavior.SingleRow))
         {
-            case CommandBehavior.SingleRow:
-                sqlBuilder.Append(" LIMIT 1");
-                break;
-            case CommandBehavior.SchemaOnly:
-                sqlBuilder.Append(" LIMIT 0");
-                break;
-            default:
-                break;
+            sqlBuilder.Append(" LIMIT 1");
         }
+        else if (behavior.HasFlag(CommandBehavior.SchemaOnly))
+        {
+            sqlBuilder.Append(" LIMIT 0");
+        }
+
         var result = await PostSqlQueryAsync(sqlBuilder.ToString(), lcts.Token).ConfigureAwait(false);
         return new ClickHouseDataReader(result, connection.TypeSettings);
     }

@@ -5,7 +5,9 @@ using System.Runtime.CompilerServices;
 using ClickHouse.Client.Numerics;
 using ClickHouse.Client.Types.Grammar;
 
-[assembly: InternalsVisibleTo("ClickHouse.Client.Tests")] // assembly-level tag to expose below classes to tests
+//[assembly: InternalsVisibleTo("ClickHouse.Client.Tests")] // assembly-level tag to expose below classes to tests
+
+[assembly: InternalsVisibleTo("ClickHouse.Client.Tests, PublicKey=00240000048000009400000006020000002400005253413100040000010001004d4f14fbb2bfd42ed1680a68d47c43fb9a0241bb8e6d442f45b39ec01a278b6004f8ab1a70e45fc5fab55395e3c3bb2f92ea66ec7d2bce3f3ff22ad206d876fb95bdb06a16540878835fa4dc56ea952c978b0681a293cd9c70a5cbbf6a9387102369f0d21bfadac1ced074a2601afc76ec2fee2da7dfe68af2e2838aa219f0d4")] // assembly-level tag to expose below classes to tests
 
 namespace ClickHouse.Client.Types;
 

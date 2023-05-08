@@ -91,7 +91,9 @@ public class ClickHouseDataReader : DbDataReader, IEnumerator<IDataReader>, IEnu
     public override Type GetFieldType(int ordinal)
     {
         var rawType = RawTypes[ordinal];
-        return rawType is NullableType nt ? nt.UnderlyingType.FrameworkType : rawType.FrameworkType;
+        var result = rawType is NullableType nt ? nt.UnderlyingType.FrameworkType : rawType.FrameworkType;
+        if (result == typeof(DBNull)) result = typeof(string);
+        return result;
     }
 
     public override float GetFloat(int ordinal) => (float)GetValue(ordinal);
@@ -144,7 +146,7 @@ public class ClickHouseDataReader : DbDataReader, IEnumerator<IDataReader>, IEnu
 
     public override T GetFieldValue<T>(int ordinal) => (T)GetValue(ordinal);
 
-    public override DataTable GetSchemaTable() => SchemaDescriber.DescribeSchema(this);
+    public override DataTable GetSchemaTable() => SchemaDescriber.DescribeSchemaTable(this);
 
     public override Task<bool> NextResultAsync(CancellationToken cancellationToken) => Task.FromResult(false);
 
